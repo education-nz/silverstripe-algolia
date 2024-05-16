@@ -71,11 +71,14 @@ class AlgoliaQuerier
                         // Snippet results are cofigured in Algolia to be returned.
                         // Since the following result is actually fetched from the DB
                         // I need to concatenate the aogolias snippeted result to the $hit to be returned
-                        if(isset($hit["_snippetResult"]) && isset($hit["_snippetResult"]['Content'])) {
-                            $record->snippetResult = $hit["_snippetResult"]['Content']["value"];
-                        }
                         if(isset($hit["_snippetResult"]) && isset($hit["_snippetResult"]['objectContent'])) {
-                            $record->snippetResult = $hit["_snippetResult"]['objectContent']["value"];
+                            $record->snippetResultContent = $hit["_snippetResult"]['objectContent']["value"];
+                        }
+                        
+                        if(isset($hit["_snippetResult"]) && isset($hit["_snippetResult"]['Subtitle'])) {
+                            if($hit["_snippetResult"]['Subtitle']['matchLevel'] !== "none"){
+                                $record->snippetResultSubtitle = $hit["_snippetResult"]['Subtitle']["value"];
+                            }
                         }
 
                         if(isset($hit["objectLink"])) {
