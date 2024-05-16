@@ -71,9 +71,6 @@ class AlgoliaQuerier
                         // Snippet results are cofigured in Algolia to be returned.
                         // Since the following result is actually fetched from the DB
                         // I need to concatenate the aogolias snippeted result to the $hit to be returned
-                        if(isset($hit["_snippetResult"]) && isset($hit["_snippetResult"]['Content'])) {
-                            $record->snippetResult = $hit["_snippetResult"]['Content']["value"];
-                        }
                         if(isset($hit["_snippetResult"]) && isset($hit["_snippetResult"]['objectContent'])) {
                             $record->snippetResult = $hit["_snippetResult"]['objectContent']["value"];
                         }
@@ -88,16 +85,6 @@ class AlgoliaQuerier
                     Injector::inst()->get(LoggerInterface::class)->notice($e);
                 }
             }
-        }
-
-        //Custom sorting results so Guide pages are always first.
-        //This will unset all results that aren't guide pages
-        //Then instantly re add to array which places them at the bottom.
-        foreach($records as $key => $wanted) {
-            if($wanted->ClassName != 'IntranetGuidePage') {
-                unset($records[$key]);
-            }
-            $records[$key] = $wanted;
         }
 
         $this->lastResult = $results;
